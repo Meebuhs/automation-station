@@ -1,0 +1,50 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+IMAGE_NAME = 'ubuntu/focal64'.freeze
+NODES = 2
+
+NET_ID = '192.168.50'.freeze
+HOST_ID = 10
+
+Vagrant.configure('2') do |config|
+  config.ssh.insert_key = false
+
+  config.vm.provider 'virtualbox' do |vm|
+    vm.memory = 2048
+    vm.cpus = 2
+  end
+
+  config.vm.define 'master' do |master|
+    master.vm.box = IMAGE_NAME
+    master.vm.network 'private_network', ip: "#{NET_ID}.#{HOST_ID}"
+    master.vm.hostname = 'master'
+    master.vm.provision 'ansible' do |ansible|
+      ansible.playbook = 'kubernetes-setup/master-playbook.yml'
+      ansible.extra_vars = {
+        node_ip: "#{NET_ID}.#{HOST_ID}"
+      }
+    end
+  end
+
+  (1..NODES).each do |i|
+    config.vm.define "node-#{i}" do |node|
+      node.vm.box = IMAGE_NAME
+      node.vm.network 'private_network', ip: "#{NET_ID}.#{HOST_ID + i}"
+      node.vm.hostname = "node-#{i}"
+      node.vm.provision 'ansible' do |ansible|
+        ansible.playbook = 'kubernetes-setup/node-playbook.yml'
+        ansible.extra_vars = {
+          node_ip: "#{NET_ID}.#{HOST_ID + i}"
+        }
+      end
+
+      if i == NODES
+        node.vm.provision 'jenkins', type: 'ansible' do |ansible|
+          ansible.limit = 'master'
+          ansible.playbook = 'jenkins-setup/deploy-jenkins-playbook.yml'
+        end
+      end
+    end
+  end
+end

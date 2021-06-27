@@ -1,0 +1,37 @@
+---
+- hosts: all
+  tasks:
+    - name: Create jenkins namespace
+      command: kubectl create namespace jenkins
+
+    - name: Copy the service account manifest to server location
+      copy:
+        src: ./jenkins-service-account.yml
+        dest: /tmp/jenkins-service-account.yml
+
+    - name: Create the service account
+      command: kubectl apply -f /tmp/jenkins-service-account.yml
+
+    - name: Copy the persistent volume manifest to server location
+      copy:
+        src: ./persistent-volume.yml
+        dest: /tmp/persistent-volume.yml
+
+    - name: Create the persistent volume
+      command: kubectl create -f /tmp/persistent-volume.yml
+
+    - name: Copy the deployment manifest to server location
+      copy:
+        src: ./jenkins-deployment.yml
+        dest: /tmp/jenkins-deployment.yml
+
+    - name: Create the deployment
+      command: kubectl apply -f /tmp/jenkins-deployment.yml
+
+    - name: Copy the service manifest to server location
+      copy:
+        src: ./jenkins-service.yml
+        dest: /tmp/jenkins-service.yml
+
+    - name: Create the service
+      command: kubectl apply -f /tmp/jenkins-service.yml

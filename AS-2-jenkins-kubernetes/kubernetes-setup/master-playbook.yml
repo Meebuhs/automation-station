@@ -1,0 +1,20 @@
+- name: Install docker and its dependencies
+  import_playbook: common/docker-setup-playbook.yml
+
+- name: Disable swap to allow kubelet to start
+  import_playbook: common/disable-swap-playbook.yml
+
+- name: Install kubelet, kubeadm and kubectl
+  import_playbook: common/kubernetes-install-playbook.yml
+
+- name: Initialise master kubernetes cluster
+  import_playbook: master/kubernetes-initialize-playbook.yml
+
+- name: Setup kube config
+  import_playbook: master/kubeconfig-setup-playbook.yml
+
+- name: Setup networking provider
+  import_playbook: master/calico-setup-playbook.yml
+
+- name: Generate kube join command
+  import_playbook: master/generate-join-playbook.yml
