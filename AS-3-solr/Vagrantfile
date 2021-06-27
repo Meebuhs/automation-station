@@ -1,0 +1,21 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+IMAGE_NAME = 'ubuntu/focal64'.freeze
+VM_NAME = 'vagrant-solr'.freeze
+
+Vagrant.configure('2') do |config|
+  config.vm.provider 'virtualbox' do |vm|
+    vm.memory = 2048
+    vm.cpus = 2
+  end
+
+  config.vm.define 'solr' do |solr|
+    solr.vm.box = IMAGE_NAME
+    solr.vm.network 'private_network', ip: '192.168.50.10'
+    solr.vm.hostname = VM_NAME
+    solr.vm.provision 'ansible' do |ansible|
+      ansible.playbook = 'main.yml'
+    end
+  end
+end
