@@ -1,0 +1,14 @@
+---
+- name: Install NodeJS and npm.
+  apt:
+    name:
+      - nodejs
+      - npm
+    state: present
+
+- name: Install Forever (to run our NodeJS app).
+  npm:
+    name: forever
+    global: true
+    state: present
+

@@ -1,0 +1,27 @@
+---
+- name: Ensure gnupg is installed.
+  apt:
+    name: gnupg
+    state: present
+
+- name: Add apt key for MongoDB.
+  apt_key:
+    url: "{{ mongo_apt_key_url }}"
+    state: present
+
+- name: Copy MongoDB list file.
+  copy:
+    src: files/mongo.list
+    dest: "{{ mongo_list_file_location }}"
+
+- name: Install MongoDB.
+  apt:
+    name: "mongodb-org"
+    state: present
+    update_cache: true
+
+- name: Ensure MongoDB service is running.
+  service:
+    name: mongod
+    state: started
+    enabled: true

@@ -11,20 +11,10 @@
         update_cache: true
         cache_valid_time: 3600
 
+  roles:
+    - nodejs
+
   tasks:
-    - name: Install NodeJS and npm.
-      apt:
-        name:
-          - nodejs
-          - npm
-        state: present
-
-    - name: Install Forever (to run our NodeJS app).
-      npm:
-        name: forever
-        global: true
-        state: present
-
     - name: Ensure NodeJS app folder exists.
       file:
         path: "{{ node_apps_location }}"
@@ -41,32 +31,8 @@
       npm:
         path: "{{ node_apps_location }}"
 
-    - name: Ensure gnupg is installed.
-      apt:
-        name: gnupg
-        state: present
-
-    - name: Add apt key for MongoDB.
-      apt_key:
-        url: "{{ mongo_apt_key_url }}"
-        state: present
-
-    - name: Copy MongoDB list file.
-      copy:
-        src: files/mongo.list
-        dest: "{{ mongo_list_file_location }}"
-
-    - name: Install MongoDB.
-      apt:
-        name: "mongodb-org"
-        state: present
-        update_cache: true
-
-    - name: Ensure MongoDB service is running.
-      service:
-        name: mongod
-        state: started
-        enabled: true
+    - include_role:
+        name: mongodb
 
     - name: Check list of running NodeJS apps.
       command: forever list

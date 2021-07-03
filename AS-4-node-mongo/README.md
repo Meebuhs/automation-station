@@ -14,6 +14,8 @@ Once Vagrant is finished, the app will be accessible at `192.168.50.10:3000` and
 
 Jeff Geerling's Ansible for DevOps https://www.ansiblefordevops.com/ - Chapter 4 - Adapted to run on an Ubuntu box. Added MongoDB setup and cloning/serving of the below repository. 
 
-https://github.com/ijason/NodeJS-Sample-App - The sample app served by this project
+Jeff Geerling's Ansible for DevOps https://www.ansiblefordevops.com/ - Chapter 6 - For converting the playbooks to use roles.
 
-https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/ - Installation instructions for MongoDB
+https://github.com/ijason/NodeJS-Sample-App - The sample app served by this project.
+
+https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/ - Installation instructions for MongoDB.
