@@ -1,0 +1,78 @@
+---
+- hosts: all
+  become: yes
+
+  vars_files:
+    - vars.yml
+
+  pre_tasks:
+    - name: Update apt cache if needed.
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+  tasks:
+    - name: Install NodeJS and npm.
+      apt:
+        name:
+          - nodejs
+          - npm
+        state: present
+
+    - name: Install Forever (to run our NodeJS app).
+      npm:
+        name: forever
+        global: true
+        state: present
+
+    - name: Ensure NodeJS app folder exists.
+      file:
+        path: "{{ node_apps_location }}"
+        state: directory
+
+    - name: Clone project to server.
+      git:
+        repo: "{{ project_repo }}"
+        dest: "{{ node_apps_location }}"
+        clone: true
+        version: master
+
+    - name: Install app dependencies.
+      npm:
+        path: "{{ node_apps_location }}"
+
+    - name: Ensure gnupg is installed.
+      apt:
+        name: gnupg
+        state: present
+
+    - name: Add apt key for MongoDB.
+      apt_key:
+        url: "{{ mongo_apt_key_url }}"
+        state: present
+
+    - name: Copy MongoDB list file.
+      copy:
+        src: files/mongo.list
+        dest: "{{ mongo_list_file_location }}"
+
+    - name: Install MongoDB.
+      apt:
+        name: "mongodb-org"
+        state: present
+        update_cache: true
+
+    - name: Ensure MongoDB service is running.
+      service:
+        name: mongod
+        state: started
+        enabled: true
+
+    - name: Check list of running NodeJS apps.
+      command: forever list
+      register: forever_list
+      changed_when: false
+
+    - name: Start the example app.
+      command: "forever start {{ project_location }}/{{ project_app_file }}"
+      when: "forever_list.stdout.find(project_location + '/' + project_app_file) == -1"

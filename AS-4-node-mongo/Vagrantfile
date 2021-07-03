@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+IMAGE_NAME = 'ubuntu/focal64'.freeze
+VM_NAME = 'vagrant-node'.freeze
+
+Vagrant.configure('2') do |config|
+  config.vm.provider 'virtualbox' do |vm|
+    vm.memory = 2048
+    vm.cpus = 2
+  end
+
+  config.ssh.insert_key = false;
+
+  config.vm.define 'node' do |node|
+    node.vm.box = IMAGE_NAME
+    node.vm.network 'private_network', ip: '192.168.50.10'
+    node.vm.hostname = VM_NAME
+    node.vm.synced_folder ".", "/vagrant", disabled: true
+
+    node.vm.provision 'ansible' do |ansible|
+      ansible.playbook = 'main.yml'
+    end
+  end
+end

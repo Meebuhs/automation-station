@@ -1,0 +1,8 @@
+node_apps_location: /usr/local/opt/node/
+
+project_app_file: "app.js"
+project_location: "{{ node_apps_location }}/EmployeeDB"
+project_repo: https://github.com/ijason/NodeJS-Sample-App.git
+
+mongo_apt_key_url: https://www.mongodb.org/static/pgp/server-4.4.asc
+mongo_list_file_location: /etc/apt/sources.list.d/mongodb-org-4.4.list
