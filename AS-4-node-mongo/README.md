@@ -4,9 +4,7 @@ This repo provides an example of using Vagrant to provision a VM, via Ansible, f
 
 ### Getting started
 
-First install the required VirtualBox and Vagrant. You can either do this manually for your OS or if using Ubuntu you can run install.sh `sudo sh install.sh` and follow the prompts.
-
-Next provision the VM by running `vagrant up`. This will automatically start the VM as well as prepare the machine to serve an example NodeJS app.
+Create and provision the VM by running `vagrant up`. This will automatically start the VM as well as prepare the machine to serve an example NodeJS app.
 
 Once Vagrant is finished, the app will be accessible at `192.168.50.10:3000` and the VM can be accessed by running `vagrant ssh`.
 

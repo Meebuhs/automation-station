@@ -4,9 +4,7 @@ This repository demonstrates the creation of a multi-node Kubernetes cluster usi
 
 ### Getting Started
 
-First install the required VirtualBox, Vagrant and Ansible. You can either do this manually or if using Ubuntu you can run install.sh `sudo sh install.sh` and follow the prompts.
-
-The Kubernetes cluster can then be deployed by running `vagrant up` in the root of this project. The master can be accessed via `vagrant ssh master` while the nodes can be accessed with `vagrant ssh node-N` where `N` is the node number (Note here the number of nodes is determined by the value of `NODES` in the Vagrantfile)
+The Kubernetes cluster can be deployed by running `vagrant up` in the root of this project. The master can be accessed via `vagrant ssh master` while the nodes can be accessed with `vagrant ssh node-N` where `N` is the node number (Note here the number of nodes is determined by the value of `NODES` in the Vagrantfile)
 
 Once running, the jenkins dashboard will be accessible at `http://192.168.50.11:32000`.
 
