@@ -17,6 +17,12 @@ echo \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update && sudo apt-get install docker-ce docker-ce-cli containerd.io
 
+# Perform docker postinstall steps to ensure docker is useable without root privileges
+# see https://docs.docker.com/engine/install/linux-postinstall/
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
+
 # This assumes python3 is already available on your machine and if you're running Ubuntu 20.04, it is by default.
 # You may however want to check which version you have installed
 
