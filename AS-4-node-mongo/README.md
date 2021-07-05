@@ -1,4 +1,4 @@
-## Node example
+## Node MongoDB example
 
 This repo provides an example of using Vagrant to provision a VM, via Ansible, for the purpose of hosting a NodeJS web server.
 
