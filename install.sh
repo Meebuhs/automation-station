@@ -29,4 +29,4 @@ newgrp docker
 # Install Ansible and Molecule
 # see https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pip
 sudo apt install python3-pip
-pip3 install ansible molecule jinja2
+pip3 install ansible molecule jinja2 yamllint ansible-lint
